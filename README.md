@@ -24,7 +24,7 @@ $db = new Database(
     $host = "127.0.0.1",
     $port = "3306",
     $user = "example_user",
-    $pass = "example_password",
+    $pass = "",
     $dbname = "example_name",
     $driver = "mysql" // Not needed here since default is mysql
 );
@@ -52,10 +52,13 @@ $router->get('/api/user', function ($data) use ($db) { // Dependency Injection f
     return ['message' => $results];
 });
 
-$router->get('/api/user/@uid', function ($data) use ($db) { // Dependency Injection for database
-    $results = $db->prepare("SELECT * FROM users WHERE id = :id", [":id" => 1])->run()->fetch();
+$router->get('/api/user/@uid', function ($uid) use ($db) { // Dependency Injection for database
+    $uid = (int)$uid;
 
-    return ['message' => $results];
+    $results = $db->prepare("SELECT * FROM users WHERE id = :id", [":id" => $uid])->run()->fetch();
+
+    echo json_encode(['message' => $results]);
+    return;
 });
 
 // Custom 404 error (not needed)
@@ -65,6 +68,5 @@ $router->setNotFound(function () {
 });
 
 // Done
-$db->close();
 $router->run();
 ```

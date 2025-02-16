@@ -53,5 +53,5 @@ $router->setNotFound(function () {
 });
 
 // Done
-// $db->close();
+$db->close();
 $router->run();

@@ -13,8 +13,8 @@ A person only needs two things in this world, Routing and a database.
 <?php
 
 // Require
-require_once __DIR__ . '/../framework/Include.php';
-require_once __DIR__ . '/../framework/database/Database.php';
+require_once __DIR__ . '/framework/Include.php';
+require_once __DIR__ . '/framework/database/Database.php';
 
 // Require controllers if wanted
 
@@ -32,11 +32,14 @@ $db = new Database(
 
 // Example routes
 $router->get('/api/hi', function () {
-    return ['message' => 'Hello, from Cat Framework!'];
+    echo json_encode(['message' => 'Hello, from Cat Framework!']);
+
+    return;
 });
 
-$router->post('/api/echo', function ($data) {
-    return ['you_sent' => $data];
+$router->get('/api/echo/@message', function ($message) {
+    echo json_encode(['you_sent' => $message]);
+    return;
 });
 
 $router->get('/api/user', function ($data) use ($db) { // Dependency Injection for database
